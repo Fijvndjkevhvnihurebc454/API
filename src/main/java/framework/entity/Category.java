@@ -18,12 +18,4 @@ public class Category {
 
 	@JsonProperty("id")
 	private int id;
-
-	public static Category setDefaultData(Category category) {
-		return Category.builder()
-				.name(category.getName())
-				.id(category.getId())
-				.build();
-	}
-
 }

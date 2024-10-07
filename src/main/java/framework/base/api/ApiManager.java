@@ -13,38 +13,40 @@ import java.util.List;
 import static framework.base.BaseTest.getBaseUrl;
 
 public class ApiManager {
+    private static final String APPLICATION_JSON = "application/json";
+    private static final String APPLICATION_CONTENT_TYPE = "Content-Type";
     private RequestSpecification clientRequestSpecification = null;
 
-    public ApiManager() {
-        createRequestSpecification(getBaseUrl(), "all");
+    public ApiManager(String logLevel) {
+        createRequestSpecification(getBaseUrl(), logLevel);
     }
 
     private RequestSpecification createRequestSpecification(String baseUri, String logLevel) {
 
         switch(logLevel) {
             case "all":
-                clientRequestSpecification =  RestAssured.given().
+                this.clientRequestSpecification =  RestAssured.given().
                         log().all()
                         .baseUri(baseUri)
                         .config(RestAssured.config().sslConfig(new SSLConfig().relaxedHTTPSValidation()))
                         .expect().log().all().request();
                 break;
             case "headers":
-                clientRequestSpecification =  RestAssured.given().
+                this.clientRequestSpecification =  RestAssured.given().
                         log().all()
                         .baseUri(baseUri)
                         .config(RestAssured.config().sslConfig(new SSLConfig().relaxedHTTPSValidation()))
                         .expect().log().headers().request();
                 break;
             case "body":
-                clientRequestSpecification =  RestAssured.given().
+                this.clientRequestSpecification =  RestAssured.given().
                         log().all()
                         .baseUri(baseUri)
                         .config(RestAssured.config().sslConfig(new SSLConfig().relaxedHTTPSValidation()))
                         .expect().log().body().request();
                 break;
             default:
-                clientRequestSpecification =  RestAssured.given().
+                this.clientRequestSpecification =  RestAssured.given().
                         log().all()
                         .baseUri(baseUri)
                         .config(RestAssured.config().sslConfig(new SSLConfig().relaxedHTTPSValidation()))
@@ -69,8 +71,8 @@ public class ApiManager {
                         .status(petStatus)
                         .build())
                 .with()
-                .header("accept", "application/json")
-                .header("Content-Type", "application/json")
+                .header("accept", APPLICATION_JSON)
+                .header(APPLICATION_CONTENT_TYPE, APPLICATION_JSON)
                 .post("/v2/pet");
     }
 
@@ -85,22 +87,22 @@ public class ApiManager {
                         .status(petStatus)
                         .build())
                 .with()
-                .header("accept", "application/json")
-                .header("Content-Type", "application/json")
+                .header("accept", APPLICATION_JSON)
+                .header(APPLICATION_CONTENT_TYPE, APPLICATION_JSON)
                 .put("/v2/pet");
     }
 
     public Response getPet(String petId) {
         return getClientRequestSpecification()
                 .with()
-                .header("Content-Type", "application/json")
+                .header(APPLICATION_CONTENT_TYPE, APPLICATION_JSON)
                 .get("/v2/pet/" + petId);
     }
 
     public Response deletePet(String petId) {
         return getClientRequestSpecification()
                 .with()
-                .header("Content-Type", "application/json")
+                .header(APPLICATION_CONTENT_TYPE, APPLICATION_JSON)
                 .delete("/v2/pet/" + petId);
     }
 }

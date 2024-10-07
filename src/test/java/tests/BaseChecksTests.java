@@ -3,18 +3,11 @@ package tests;
 import data.PetsData;
 import framework.base.BaseTest;
 import framework.base.api.ApiManager;
-import framework.entity.Category;
-import framework.entity.TagsItem;
-import framework.entity.request.PetsCreationUpdateRequest;
-import io.restassured.http.Method;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.annotations.Test;
 
-
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -24,7 +17,7 @@ public class BaseChecksTests extends BaseTest {
 
     @Test(dataProvider = "Pets Creation data", dataProviderClass = PetsData.class)
     public void checkPetCreationDeletionTest(String petId, String petName, String petStatus) {
-        ApiManager apiManager = new ApiManager();
+        ApiManager apiManager = new ApiManager("all");
         Response petCreationResponse = apiManager.createPet(petId, petName, petStatus);
 
         assertThat(petCreationResponse.getStatusCode()).as("Status code for creation is not correct").isEqualTo(200);
@@ -49,7 +42,7 @@ public class BaseChecksTests extends BaseTest {
 
     @Test(dataProvider = "Pets Creation data", dataProviderClass = PetsData.class)
     public void checkPetUpdateTest(String petId, String petName, String petStatus) {
-        ApiManager apiManager = new ApiManager();
+        ApiManager apiManager = new ApiManager("headers");
         Response petCreationResponse = apiManager.createPet(petId, petName, petStatus);
 
         assertThat(petCreationResponse.getStatusCode()).as("Status code for creation is not correct").isEqualTo(200);

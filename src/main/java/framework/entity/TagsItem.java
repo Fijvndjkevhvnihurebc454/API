@@ -18,12 +18,4 @@ public class TagsItem {
 
 	@JsonProperty("id")
 	private int id;
-
-	public static TagsItem setDefaultData(TagsItem tagsItem) {
-		return TagsItem.builder()
-				.name(tagsItem.getName())
-				.id(tagsItem.getId())
-				.build();
-	}
-
 }
